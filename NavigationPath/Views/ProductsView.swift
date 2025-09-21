@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ProductsView: View {
     
+    @Binding var path: NavigationPath
+
     @State var category: Category
 
     @State var products: [Product]
@@ -21,12 +23,20 @@ struct ProductsView: View {
                 }
             }
             .navigationTitle(category.name)
+            .navigationDestination(for: Product.self) { product in
+                
+                ProductDetailsView(
+                    product: product,
+                    path: $path
+                )
+            }
         }
     }
 }
 
 #Preview {
     ProductsView(
+        path: .constant(NavigationPath()),
         category: categories[0],
         products: products.filter { $0.category == categories[0] }
     )
